@@ -1,4 +1,4 @@
-package com.boutique.security;
+package com.boutique.security.model;
 
 
 public enum Role {

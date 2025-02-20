@@ -1,4 +1,4 @@
-package com.boutique.security;
+/*package com.boutique.security;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -58,3 +58,4 @@ public class Utilisateur implements UserDetails {
         return true;
     }
 }
+*/

@@ -1,10 +1,8 @@
-package com.boutique.security;
+/*package com.boutique.security;
 
 
-
-import com.boutique.security.Utilisateur;
-import com.boutique.security.Role;
+import com.boutique.security.model.Users;
 
 public interface IAuthService {
-    Utilisateur registerUser(String email, String username, String password, Role role);
-}
+    Users registerUser(String email, String username, String password, Role role);
+}*/

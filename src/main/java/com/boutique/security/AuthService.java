@@ -1,8 +1,6 @@
-package com.boutique.security;
+/*package com.boutique.security;
 
-import com.boutique.security.Utilisateur;
-import com.boutique.security.Role;
-import com.boutique.security.UtilisateurRepository;
+import com.boutique.security.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,23 +9,23 @@ import org.springframework.stereotype.Service;
 public class AuthService implements IAuthService {
 
     @Autowired
-    private UtilisateurRepository utilisateurRepository;
+    private UsersRepository utilisateurRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Utilisateur registerUser(String email, String username, String password, Role role) {
+    public Users registerUser(String email, String username, String password, Role role) {
         if (utilisateurRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("Email déjà utilisé !");
         }
 
-        Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setEmail(email);
-        utilisateur.setUsername(username);
-        utilisateur.setPassword(passwordEncoder.encode(password));
-        utilisateur.setRole(role);
+        Users user = new Users();
+        user.setEmail(email);
+        user.setUsername(username);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole(role);
 
-        return utilisateurRepository.save(utilisateur);
+        return utilisateurRepository.save(user);
     }
-}
+}*/

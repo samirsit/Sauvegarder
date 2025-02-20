@@ -1,4 +1,4 @@
-package com.boutique.model;
+package com.boutique.security.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -9,10 +9,9 @@ import java.util.Collection;
 import java.util.Collections;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 @Data @NoArgsConstructor @AllArgsConstructor
 @Table(name = "users")
-public abstract class User implements UserDetails {
+public class Users implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,13 +19,11 @@ public abstract class User implements UserDetails {
 
     private String email;
     private String password;
+    private String username;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public enum Role {
-        CLIENT, VENDEUR, ADMIN
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
