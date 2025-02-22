@@ -4,6 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,6 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final UserDetailsService userDetailsService;
 
+    @Autowired
     public JwtAuthenticationFilter(UserDetailsService userDetailsService, JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
         this.userDetailsService = userDetailsService;
@@ -32,17 +34,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        // Récupérer l'en-tête "Authorization" de la requête
         String authHeader = request.getHeader("Authorization");
 
+        // Vérifier si l'en-tête est présent et commence par "Bearer "
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            // Si non, passer la requête au filtre suivant
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authHeader.substring(7); // Supprime "Bearer " du token
+        // Extraire le token JWT (en supprimant "Bearer ")
+        String token = authHeader.substring(7);
         String username = null;
 
         try {
+            // Extraire le nom d'utilisateur (email) du token
             username = jwtUtil.getUsernameFromToken(token);
         } catch (ExpiredJwtException e) {
             System.out.println("Le token a expiré : " + e.getMessage());
@@ -54,18 +61,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             System.out.println("Le token est vide ou null : " + e.getMessage());
         }
 
+        // Si le nom d'utilisateur est valide et qu'il n'y a pas d'authentification en cours
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // Charger les détails de l'utilisateur à partir de la base de données
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
+            // Valider le token JWT
             if (jwtUtil.validateToken(token, userDetails)) {
+                // Créer un objet d'authentification
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
+
+                // Ajouter les détails de la requête (comme l'adresse IP) à l'authentification
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
+                // Définir l'authentification dans le contexte de sécurité
                 SecurityContextHolder.getContext().setAuthentication(authToken);
             }
         }
 
+        // Passer la requête au filtre suivant
         filterChain.doFilter(request, response);
     }
 }

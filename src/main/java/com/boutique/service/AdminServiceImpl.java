@@ -2,6 +2,7 @@ package com.boutique.service;
 
 import com.boutique.model.Client;
 import com.boutique.model.Vendeur;
+import com.boutique.repository.AdminRepository;
 import com.boutique.repository.ClientRepository;
 import com.boutique.repository.VendeurRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,16 +11,16 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-
 @Service
 @RequiredArgsConstructor
-public class AdminServiceImpl implements AdminServiceInterface{
+public class AdminServiceImpl implements AdminServiceInterface {
 
-    private ClientRepository clientRepository;
-    private VendeurRepository vendeurRepository;
+    private final ClientRepository clientRepository;
+    private final VendeurRepository vendeurRepository;
+    private final AdminRepository adminRepository;
 
+    // 🔹 Clients
 
-    // Client
     @Override
     public Client enregistrerClient(Client client) {
         return clientRepository.save(client);
@@ -56,7 +57,7 @@ public class AdminServiceImpl implements AdminServiceInterface{
         clientRepository.deleteByEmail(email);
     }
 
-    //Vendeur
+    // 🔹 Vendeurs
 
     @Override
     public Vendeur enregistrerVendeur(Vendeur vendeur) {
@@ -81,7 +82,7 @@ public class AdminServiceImpl implements AdminServiceInterface{
     @Override
     public void supprimerVendeurParId(Long id) {
         if (!vendeurRepository.existsById(id)){
-            throw new RuntimeException("Client non trouvé");
+            throw new RuntimeException("Vendeur non trouvé");
         }
         vendeurRepository.deleteById(id);
     }
@@ -89,7 +90,7 @@ public class AdminServiceImpl implements AdminServiceInterface{
     @Override
     public void supprimerVendeurParEmail(String email) {
         if (!vendeurRepository.existsByEmail(email)){
-            throw new RuntimeException("Client non trouvé");
+            throw new RuntimeException("Vendeur non trouvé");
         }
         vendeurRepository.deleteByEmail(email);
     }

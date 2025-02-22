@@ -52,7 +52,7 @@ public class JwtUtil {
         }
     }
 
-    // Récupérer le username depuis le token
+    // Récupérer username depuis le token
     public String getUsernameFromToken(String token) {
         return extractClaim(token, Claims::getSubject);
     }

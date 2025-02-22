@@ -56,6 +56,8 @@ public class AuthController {
             String accessToken = jwtUtil.generateAccessToken(userDetails);
             String refreshToken = jwtUtil.generateRefreshToken(userDetails);
 
+            System.out.println("Utlisateur trouvé " + users);
+
             return ResponseEntity.ok(new Token(accessToken, refreshToken));
 
         } catch (BadCredentialsException e) {

@@ -12,8 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class VendeurServiceImpl implements VendeurServiceInterface {
 
-    private ProduitRepository produitRepository;
-    private VendeurRepository vendeurRepository;
+    private final ProduitRepository produitRepository;
+    private final VendeurRepository vendeurRepository;
 
     @Override
     public Produit ajouterProduit(Produit produit) {
@@ -22,29 +22,26 @@ public class VendeurServiceImpl implements VendeurServiceInterface {
 
     @Override
     public List<Produit> getProduitsParVendeur(String email) {
-        return produitRepository.findByVendeurEmail(email);  // Appel à la méthode du repository
+        return produitRepository.findByVendeurEmail(email);
     }
-
 
     @Override
     public Produit mettreAJourProduit(Long id, Produit produit) {
         return produitRepository.findById(id).map(prod -> {
                     prod.setCategorie(produit.getCategorie());
                     prod.setVendeur(produit.getVendeur());
-                    prod.setCategorie(produit.getCategorie());
                     prod.setNomProduit(produit.getNomProduit());
                     prod.setPrix(produit.getPrix());
-                    return produitRepository.save(produit);
+                    return produitRepository.save(prod);
                 })
                 .orElseThrow(() -> new RuntimeException("Produit non trouvé !"));
     }
 
     @Override
     public void supprimerProduit(Long id) {
-        if (!produitRepository.existsById(id)) {  // Vérifie l'existence du client par email
-            throw new RuntimeException("Client non trouvé !");
+        if (!produitRepository.existsById(id)) {
+            throw new RuntimeException("Produit non trouvé !");
         }
-        produitRepository.deleteById(id);  // Suppression du client par email
+        produitRepository.deleteById(id);
     }
 }
-
