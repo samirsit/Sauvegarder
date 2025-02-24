@@ -1,7 +1,9 @@
 package com.boutique.controller;
 
+import com.boutique.model.Client;
 import com.boutique.model.Produit;
-import com.boutique.service.VendeurServiceImpl;
+import com.boutique.model.Vendeur;
+import com.boutique.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,34 +11,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/vendeur")
+@RequestMapping("/api/vendeur")
 @RequiredArgsConstructor
 public class VendeurController {
 
-    private final VendeurServiceImpl vendeurService;
+    private final VendeurServiceInterface vendeurServiceInterface;
 
-    // 🔹 Ajouter un produit
-    @PostMapping("/ajouter-produits")
-    public ResponseEntity<Produit> ajouterProduit(@RequestBody Produit produit) {
-        return ResponseEntity.ok(vendeurService.ajouterProduit(produit));
+    // Ajouter un vendeur
+    @PostMapping(path = "/creer-vendeur")
+    public ResponseEntity<Vendeur> enregistrerClient(@RequestBody Vendeur vendeur) {
+        Vendeur nouveauVendeur = vendeurServiceInterface.enregistrerVendeur(vendeur);
+        return ResponseEntity.ok(nouveauVendeur);
     }
 
-    // 🔹 Lister les produits d'un vendeur (par email)
-    @GetMapping("/listes-produits/{email}")
-    public ResponseEntity<List<Produit>> getProduitsParVendeur(@PathVariable String email) {
-        return ResponseEntity.ok(vendeurService.getProduitsParVendeur(email));
+    // Mettre à jour un vendeur
+    @PutMapping("/modifier-vendeur/{email}")
+    public ResponseEntity<Vendeur> mettreAJourVendeur(@PathVariable String email, @RequestBody Vendeur vendeur) {
+        Vendeur VendeurMisAJour = vendeurServiceInterface.mettreAJourVendeur(email, vendeur);
+        return ResponseEntity.ok(VendeurMisAJour);
     }
 
-    // 🔹 Mettre à jour un produit (par ID)
-    @PutMapping("/modifier-produits/{id}")
-    public ResponseEntity<Produit> mettreAJourProduit(@PathVariable Long id, @RequestBody Produit produit) {
-        return ResponseEntity.ok(vendeurService.mettreAJourProduit(id, produit));
-    }
-
-    // 🔹 Supprimer un produit (par ID)
-    @DeleteMapping("/supprimer-produits/{id}")
-    public ResponseEntity<Void> supprimerProduit(@PathVariable Long id) {
-        vendeurService.supprimerProduit(id);
+    // Supprimer un vendeur
+    @DeleteMapping("/supprimer-vendeur/{email}")
+    public ResponseEntity<Void> supprimerVendeur(@PathVariable String email) {
+        vendeurServiceInterface.supprimerVendeur(email);
         return ResponseEntity.noContent().build();
     }
 }

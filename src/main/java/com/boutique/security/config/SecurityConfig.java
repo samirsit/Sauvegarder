@@ -37,10 +37,11 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/clients/**").hasAuthority("ROLE_CLIENT")
-                        .requestMatchers("/vendeur/**").hasAuthority("ROLE_VENDEUR")
+                        .requestMatchers("/api/auth/**").permitAll() // Autorisation ouverte pour l'auth
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/clients/**").hasAuthority("ROLE_CLIENT")
+                        .requestMatchers("/api/vendeur/produits/**").hasAuthority("ROLE_VENDEUR") // 🔥 Correction ici
+                        .requestMatchers("/api/vendeur/**").hasAuthority("ROLE_VENDEUR") // 🔥 Ajout pour plus de clarté
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
