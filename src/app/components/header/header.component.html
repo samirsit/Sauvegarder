@@ -1,0 +1,20 @@
+<section class="items-2">
+  <div class="header-actions">
+    <!-- Bouton CREATE -->
+    <button class="create" mat-flat-button (click)="openDialog()">
+      CREATE
+    </button>
+
+    <!-- Nouvelle barre de recherche -->
+    <div class="search-container">
+      <input
+        type="text"
+        class="search-input"
+        [(ngModel)]="searchQuery"
+        (keyup.enter)="onSearch()"
+        placeholder="Rechercher..."
+      />
+      <mat-icon class="search-icon" (click)="onSearch()">search</mat-icon>
+    </div>
+  </div>
+</section>

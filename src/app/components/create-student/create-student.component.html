@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>Ajouter un étudiant</h2>
+<mat-dialog-content>
+  <form>
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>Prénom</mat-label>
+      <input matInput placeholder="Entrez le prénom" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>Nom</mat-label>
+      <input matInput placeholder="Entrez le nom" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" placeholder="Entrez l'email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>Téléphone</mat-label>
+      <input matInput placeholder="Entrez le téléphone" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>Spécialité</mat-label>
+      <input matInput placeholder="Entrez la spécialité" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>Date d'entrée</mat-label>
+      <input matInput type="date" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" style="width: 100%">
+      <mat-label>Date de départ</mat-label>
+      <input matInput type="date" />
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Annuler</button>
+  <button mat-flat-button color="primary">Ajouter</button>
+</mat-dialog-actions>

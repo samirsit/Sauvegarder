@@ -1,0 +1,88 @@
+/* Conteneur principal de la barre latérale */
+.container-sidebar {
+  background-color: rgba(255, 255, 255, 0.973);
+  color: #ffffff;
+  /*width: 220px;
+  height: 100vh;
+  padding: 20px;*/
+
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centre horizontalement */
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-items: center;
+  color: black;
+  margin-bottom: 40px;
+}
+.logo img {
+  max-width: 60%;
+  height: auto;
+  margin-bottom: -35px; /* Supprime l'espace sous l'image */
+}
+
+.logo h3 {
+  font-size: 16px; /* Réduit la taille du texte */
+  font-weight: bold;
+  margin: 0; /* Supprime tous les marges pour un espacement minimal */
+  text-align: center;
+}
+
+/* Menu */
+.menu {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* Liens du menu */
+.menu a {
+  display: block;
+  text-decoration: none;
+  color: #464444;
+  font-weight: 500;
+  padding: 12px 20px;
+  border-radius: 8px;
+  text-align: left;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Effet au survol et sur élément actif */
+.menu li:hover a,
+.menu li.active a {
+  background: #e9effd;
+  color: #464444;
+  width: 70%;
+  transform: translateX(5px);
+}
+
+/* Ajout d'un effet d'ombre légère */
+.menu li {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+}
+
+.menu li:hover {
+  transform: translateX(3px);
+}
+
+/* Style des icônes Material */
+mat-icon {
+  font-size: 22px; /* Ajuste la taille de l'icône */
+  vertical-align: middle; /* Corrige le décalage */
+  color: #464444; /* Optionnel : couleur des icônes */
+}
+
+.name-logo {
+  color: black;
+}

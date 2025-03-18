@@ -1,0 +1,70 @@
+/* Style global du tableau */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+/* Ajout d'un effet carte et background */
+.mat-table {
+  margin-top: 20px;
+  background-color: #f5f7fa; /* Changer le background */
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border: 2px solid #007bff; /* Changer la couleur de la bordure */
+  overflow: hidden;
+}
+
+/* Style des cellules d'en-tête */
+.mat-header-row {
+  background-color: #007bff; /* Bleu Material */
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.mat-header-cell {
+  padding: 15px;
+  font-size: 14px;
+  border-bottom: 3px solid #0056b3; /* Bordure plus foncée */
+  color: white;
+}
+
+/* Style des cellules de contenu */
+.mat-row {
+  transition: background-color 0.3s;
+}
+
+.mat-row:nth-child(even) {
+  background-color: #e9effd; /* Alternance des lignes */
+}
+
+.mat-cell {
+  padding: 12px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #007bff; /* Bordure de séparation */
+}
+
+/* Effet au survol */
+.mat-row:hover {
+  background-color: #dbe5ff; /* Survol */
+}
+
+/* Pagination personnalisée */
+.mat-paginator {
+  background-color: white;
+  border-top: 2px solid #007bff;
+  padding: 10px;
+  border-radius: 0 0 12px 12px;
+}
+
+/* Style des icônes de la pagination */
+.mat-paginator-icon {
+  color: #007bff;
+}
+
+/* Style du select de pagination */
+.mat-paginator-page-size {
+  color: #007bff;
+  font-weight: bold;
+}

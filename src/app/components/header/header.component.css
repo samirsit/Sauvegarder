@@ -1,0 +1,63 @@
+/* Section contenant le bouton et la barre de recherche */
+.items-2 {
+  display: flex;
+  justify-content: flex-end; /* Aligner à droite */
+  padding: 10px;
+  background-color: transparent; /* Supprime le bleu */
+}
+
+/* Conteneur pour aligner en ligne */
+.header-actions {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 15px; /* Espacement entre les éléments */
+}
+
+/* Style du bouton CREATE */
+.create {
+  background-color: #007bff;
+  color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: 0.3s;
+  width: 110px;
+}
+
+.create:hover {
+  background-color: #0056b3;
+}
+
+/* Conteneur de la barre de recherche */
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  padding: 5px 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Champ de recherche */
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  padding: 5px;
+}
+
+/* Icône de recherche */
+.search-icon {
+  cursor: pointer;
+  color: #007bff;
+  transition: 0.3s;
+}
+
+.search-icon:hover {
+  color: #0056b3;
+}
