@@ -1,0 +1,70 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.login-card {
+  width: 400px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.logo-container {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.logo-container img {
+  width: 100px;
+  height: auto;
+}
+
+.logo-container h2 {
+  font-size: 1.5rem;
+  margin-top: 10px;
+  color: #333333;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+button.full-width {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.inscrire {
+  text-align: center;
+}
+
+.inscrire button {
+  text-decoration: underline;
+  font-size: 1rem;
+  width: 100%; /* Correction ici */
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    width: 90%;
+    padding: 15px; /* Réduire légèrement le padding pour petits écrans */
+  }
+
+  .inscrire button {
+    width: 100%; /* S'assurer que le bouton s'adapte */
+  }
+}

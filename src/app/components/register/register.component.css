@@ -1,0 +1,57 @@
+.auth {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 96vh;
+  background-color: #ffffff;
+}
+
+.login-card {
+  margin-top: 60px;
+  width: 400px;
+  padding: 20px;
+  background-color: white;
+  margin-bottom: 60px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  padding: auto;
+}
+
+button.full-Button2 {
+  margin-top: 10px;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 12px;
+}
+
+button.full-Button1 {
+  margin-top: 8px;
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 12px;
+}
+.full-Button1 {
+  width: 100%;
+}
+.full-Button2 {
+  width: 100%;
+}
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+@media (max-width: 600px) {
+  .login-card {
+    width: 90%;
+    padding: 15px; /* Réduire légèrement le padding pour petits écrans */
+  }
+}
