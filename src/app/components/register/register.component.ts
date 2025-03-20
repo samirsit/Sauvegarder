@@ -12,6 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service'; // Importation du service AuthService
+import { catchError } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -33,6 +36,7 @@ export class RegisterComponent {
 
   constructor(
     private fb: FormBuilder,
+    private authService: AuthService, // Injection du service AuthService
     public dialogRef: MatDialogRef<RegisterComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private router: Router // Injection du service Router
@@ -46,9 +50,24 @@ export class RegisterComponent {
 
   onInscription(): void {
     if (this.inscriptionForm.valid) {
-      console.log(this.inscriptionForm.value);
-      // Logique d'inscription ici
-      // Par exemple, appeler un service pour inscrire l'utilisateur
+      const { username, email, password } = this.inscriptionForm.value;
+
+      this.authService
+        .register(username, email, password)
+        .pipe(
+          catchError((error) => {
+            this.errorMessage =
+              error?.error?.message || "Une erreur s'est produite.";
+            return of(null); // Retourne un observable vide pour éviter la rupture du flux
+          })
+        )
+        .subscribe((response) => {
+          if (response) {
+            console.log('Inscription réussie', response);
+            this.dialogRef.close(); // Ferme la boîte de dialogue
+            this.router.navigate(['/']); // Redirige vers la page de connexion
+          }
+        });
     } else {
       this.errorMessage = 'Veuillez vérifier les champs obligatoires.';
     }

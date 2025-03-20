@@ -1,0 +1,51 @@
+/* Appliquer une police uniforme */
+* {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* évite les problèmes de dimensionnement */
+}
+
+/* Appliquer un fond gris UNIQUEMENT au contenu principal */
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f8f9fc;
+  margin: 0;
+  padding: 0;
+}
+
+/* Conteneur principal : Sidebar + Contenu */
+.container {
+  display: flex;
+  flex-direction: row; /* côte à côte (par défaut) */
+  align-items: stretch; /* éléments occupent toute la hauteur disponible */
+  height: 100vh; /* pleine hauteur de l'écran */
+}
+
+/* Sidebar */
+.items-left {
+  width: 250px;
+  background: #ffffff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenu principal */
+.items-right {
+  flex: 1; /* occupe tout l'espace restant à droite */
+
+  margin-top: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+
+  flex-grow: 1;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
