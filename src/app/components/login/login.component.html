@@ -1,18 +1,11 @@
 <form [formGroup]="loginForm" class="auth" (ngSubmit)="onLogin()">
   <mat-card class="login-card">
     <mat-card-content>
-      <!-- Logo et Titre -->
       <div class="logo-container">
-        <img
-          src="/logo.png"
-          alt="Logo de Village d'emplois"
-          width="100"
-          height="auto"
-        />
+        <img src="/logo.png" alt="Logo" width="100" height="auto" />
         <h2>Bienvenue sur Village d'emplois</h2>
       </div>
 
-      <!-- Champ Email -->
       <mat-form-field
         appearance="outline"
         class="full-width"
@@ -26,21 +19,14 @@
           placeholder="Ex. pat@example.com"
           aria-required="true"
         />
-        <mat-hint>Les erreurs apparaissent instantanément !</mat-hint>
         <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
           L'email est <strong>obligatoire</strong>.
         </mat-error>
-        <mat-error
-          *ngIf="
-            loginForm.get('email')?.hasError('email') &&
-            !loginForm.get('email')?.hasError('required')
-          "
-        >
+        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
           Veuillez entrer une adresse email valide.
         </mat-error>
       </mat-form-field>
 
-      <!-- Champ Mot de Passe -->
       <mat-form-field
         appearance="outline"
         class="full-width"
@@ -54,23 +40,14 @@
           placeholder="Entrez votre mot de passe"
           aria-required="true"
         />
-        <mat-hint
-          >Le mot de passe doit contenir au moins 6 caractères.</mat-hint
-        >
         <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
           Le mot de passe est <strong>obligatoire</strong>.
         </mat-error>
-        <mat-error
-          *ngIf="
-            loginForm.get('password')?.hasError('minlength') &&
-            !loginForm.get('password')?.hasError('required')
-          "
-        >
+        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
           Le mot de passe doit contenir au moins 6 caractères.
         </mat-error>
       </mat-form-field>
 
-      <!-- Bouton de Soumission -->
       <button
         mat-raised-button
         color="primary"
@@ -85,7 +62,6 @@
         <button mat-button (click)="register()">S'inscrire</button>
       </div>
 
-      <!-- Message d'erreur -->
       <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
     </mat-card-content>
   </mat-card>

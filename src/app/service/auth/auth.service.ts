@@ -34,11 +34,12 @@ export class AuthService {
   }
 
   saveToken(token: string): void {
-    localStorage.setItem('jwt_token', token);
+    localStorage.setItem('jwtToken', token);
+    console.log('Token saved:', token); // Vérifiez que le token est bien sauvegardé dans localStorage
   }
 
   getToken(): string | null {
-    return localStorage.getItem('jwt_token');
+    return localStorage.getItem('jwtToken');
   }
 
   isAuthenticated(): boolean {
@@ -46,7 +47,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('jwtToken');
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -1,32 +1,35 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../service/auth.service';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../service/auth/auth.service';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { RegisterComponent } from '../register/register.component';
+import { catchError, switchMap, throwError } from 'rxjs';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon'; // Si vous utilisez des icônes
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { RegisterComponent } from '../register/register.component';
-import { catchError, switchMap } from 'rxjs';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
+    // Modules nécessaires
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule, // Si vous utilisez des icônes
-    MatDialogModule, // Ajout ici
+    MatIconModule,
+    MatDialogModule,
+    ReactiveFormsModule,
+    CommonModule,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
@@ -39,7 +42,7 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private dialog: MatDialog // Injection de MatDialog
+    private dialog: MatDialog
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -47,49 +50,57 @@ export class LoginComponent {
     });
   }
 
+  // Méthode de connexion
   onLogin(): void {
     if (this.loginForm.valid) {
-      const email = this.loginForm.value.email;
-      const password = this.loginForm.value.password;
+      const { email, password } = this.loginForm.value;
 
       this.authService
         .login(email, password)
         .pipe(
           switchMap((response: any) => {
-            this.authService.saveToken(response.token); // Sauvegarde le token dans le localStorage
-            return this.router.navigate(['/dashboard']); // Redirige vers la page du tableau de bord
-          }),
-          catchError((error: any) => {
-            if (error.status === 401) {
-              this.errorMessage = 'Identifiants incorrects.';
-            } else if (error.status === 400) {
-              this.errorMessage = 'Requête invalide.';
+            console.log(response); // Inspecter la réponse ici pour vérifier les tokens
+            if (response.accessToken) {
+              // Utilisez 'accessToken' à la place de 'token'
+              this.authService.saveToken(response.accessToken); // Sauvegarder l'accessToken
+              return this.router.navigate(['/dashboard']); // Redirection vers le tableau de bord
             } else {
               this.errorMessage =
-                "Une erreur s'est produite. Veuillez réessayer plus tard.";
+                "Le token d'accès n'a pas été renvoyé par l'API.";
+              return throwError('Access token manquant');
             }
-            return hrowError(error);
+          }),
+          catchError((error: any) => {
+            this.handleLoginError(error);
+            return throwError(error);
           })
         )
         .subscribe();
     }
   }
 
-  register() {
-    console.log('Register button clicked'); // Ajout de cette ligne pour déboguer
+  // Gère les erreurs de connexion
+  private handleLoginError(error: any): void {
+    if (error.status === 401) {
+      this.errorMessage = 'Identifiants incorrects.';
+    } else if (error.status === 400) {
+      this.errorMessage = 'Requête invalide.';
+    } else {
+      this.errorMessage =
+        "Une erreur s'est produite. Veuillez réessayer plus tard.";
+    }
+  }
+
+  // Ouvre la boîte de dialogue d'inscription
+  register(): void {
     const dialogRef = this.dialog.open(RegisterComponent, {
-      width: '400px', // Largeur de la boîte de dialogue
+      width: '400px',
     });
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result !== undefined) {
         console.log(`Dialog result: ${result}`);
-      } else {
-        console.log('Dialog closed without result');
       }
     });
   }
-}
-function hrowError(error: any): any {
-  throw new Error('Function not implemented.');
 }
