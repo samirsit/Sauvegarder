@@ -1,0 +1,15 @@
+<div class="container-login">
+  <form [formGroup]="loginForm" id="login-form" (submit)="onLogin()">
+    <h3>Welcome Back</h3>
+    <label for="email-field">Email</label>
+    <input type="email" id="email-field" formControlName="email" />
+    <label for="password-field">Password</label>
+    <input type="password" id="password-field" formControlName="password" />
+    <button id="button-login">Log in</button>
+
+    <!-- mensaje de error -->
+    @if (errorMessage){
+    <p>{{ errorMessage }}</p>
+    }
+  </form>
+</div>

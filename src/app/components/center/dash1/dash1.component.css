@@ -1,0 +1,40 @@
+nz-input-group {
+  width: 400px;
+  background-color: rgb(236, 236, 236);
+  border-radius: 20px;
+  padding: 5px;
+  margin-bottom: 50px;
+}
+
+button {
+  background-color: rgb(20, 20, 75);
+  border: none;
+  color: white;
+  transition: background-color 0.3s ease; /* Transition pour adoucir le changement */
+}
+
+input {
+  border-color: white;
+  border: none;
+  background-color: rgb(236, 236, 236);
+}
+
+.search-button {
+  border: none;
+  accent-color: white;
+  transition: none !important; /* Désactive toutes les transitions */
+}
+button:hover {
+  background-color: rgb(20, 20, 75);
+  color: white; /* Couleur lorsque la souris est dessus */
+}
+button:active,
+button:focus {
+  background-color: rgb(
+    20,
+    20,
+    75
+  ); /* La couleur reste inchangée lors du clic et du focus */
+  outline: none; /* Enlève l'effet de focus (bordure) */
+  color: white;
+}

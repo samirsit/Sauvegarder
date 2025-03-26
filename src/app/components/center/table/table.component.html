@@ -1,0 +1,61 @@
+<nz-table
+  #basicTable
+  [nzData]="listOfstudents"
+  [nzBordered]="true"
+  [nzSize]="'middle'"
+  [nzPageIndex]="pageIndex"
+  [nzPageSize]="pageSize"
+  (nzPageIndexChange)="onPageChange($event)"
+>
+  <thead>
+    <tr>
+      <th style="background-color: rgb(20, 20, 75); color: white">Code</th>
+      <th style="background-color: rgb(20, 20, 75); color: white">Full_name</th>
+      <th style="background-color: rgb(20, 20, 75); color: white">Email</th>
+      <th style="background-color: rgb(20, 20, 75); color: white">Phone</th>
+      <th style="background-color: rgb(20, 20, 75); color: white">
+        Speciality
+      </th>
+      <th style="background-color: rgb(20, 20, 75); color: white">
+        Entry_date
+      </th>
+      <th style="background-color: rgb(20, 20, 75); color: white">
+        Departure_date
+      </th>
+      <th style="background-color: rgb(20, 20, 75); color: white">
+        Created_date
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      *ngFor="let student of listOfstudents"
+      style="background-color: #ffffff; color: black"
+    >
+      <td>{{ student.code }}</td>
+      <td>{{ student.firstname }} {{ student.lastname }}</td>
+      <td>{{ student.email }}</td>
+      <td>{{ student.phone }}</td>
+      <td>{{ student.speciality }}</td>
+      <td>
+        {{
+          student.entryDate ? (student.entryDate | date : "yyyy-MM-dd") : "N/A"
+        }}
+      </td>
+      <td>
+        {{
+          student.departureDate
+            ? (student.departureDate | date : "yyyy-MM-dd")
+            : "N/A"
+        }}
+      </td>
+      <td>
+        {{
+          student.createdDate
+            ? (student.createdDate | date : "yyyy-MM-dd")
+            : "N/A"
+        }}
+      </td>
+    </tr>
+  </tbody>
+</nz-table>

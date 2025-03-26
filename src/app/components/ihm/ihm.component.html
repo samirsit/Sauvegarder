@@ -1,0 +1,60 @@
+<nz-layout class="app-layout">
+  <!------------------------- Menu ------------------------>
+  <nz-sider
+    class="menu-sidebar"
+    nzCollapsible
+    nzWidth="256px"
+    nzBreakpoint="md"
+    [(nzCollapsed)]="isCollapsed"
+    [nzTrigger]="null"
+  >
+    <div class="sidebar-logo">
+      <nz-avatar nzSize="large" nzIcon="user"></nz-avatar>
+      <h1>Village d'emploi</h1>
+    </div>
+    <ul class="menu">
+      <li>
+        <a href="#"><mat-icon>home</mat-icon> {{ home }}</a>
+      </li>
+      <li>
+        <a href="#"><mat-icon>storefront</mat-icon> {{ products }}</a>
+      </li>
+      <li>
+        <a href="#"><mat-icon>shopping_cart</mat-icon> {{ order }}</a>
+      </li>
+      <li>
+        <a href="#"><mat-icon>group</mat-icon> {{ customers }}</a>
+      </li>
+      <li>
+        <a href="#"><mat-icon>bar_chart</mat-icon> {{ files }}</a>
+      </li>
+      <li>
+        <a href="#"><mat-icon>exit_to_app</mat-icon> {{ logout }}</a>
+      </li>
+    </ul>
+  </nz-sider>
+
+  <!------------------------- Header ------------------------>
+  <nz-layout>
+    <nz-header>
+      <div class="app-header">
+        <span
+          class="header-trigger"
+          (click)="isCollapsed = !isCollapsed"
+          (click)="toggleMenu()"
+        >
+          <nz-icon
+            class="trigger"
+            [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+          />
+        </span>
+        <!-- Logo centré -->
+        <div class="logo-container">
+          <img src="logo.png" alt="Logo" class="logo" />
+        </div>
+      </div>
+    </nz-header>
+
+    <app-center></app-center>
+  </nz-layout>
+</nz-layout>

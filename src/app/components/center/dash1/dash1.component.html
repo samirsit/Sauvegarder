@@ -1,0 +1,13 @@
+<nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+  <input type="text" nz-input placeholder="input search text" />
+
+  <ng-template #suffixIconButton>
+    <button nz-button nzType="primary" nzShape="circle">
+      <nz-icon nzType="search" />
+    </button>
+  </ng-template>
+</nz-input-group>
+
+<button nz-button nzType="primary" [nzSize]="size" nzShape="round">
+  Create
+</button>
