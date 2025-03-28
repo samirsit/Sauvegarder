@@ -1,0 +1,35 @@
+<div *ngIf="students.length > 0; else noStudents">
+  <table>
+    <thead>
+      <tr>
+        <th>Code</th>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th>Spécialité</th>
+        <th>Date d'entrée</th>
+        <th>Première mission</th>
+        <th>Date de création</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{ student.code }}</td>
+        <td>{{ student.firstName }}</td>
+        <td>{{ student.lastName }}</td>
+        <td>{{ student.email }}</td>
+        <td>{{ student.phone }}</td>
+        <td>{{ student.speciality }}</td>
+        <td>{{ student.entryAt | date : "dd/MM/yyyy" }}</td>
+        <td>{{ student.firstDepartureMissionAt | date : "dd/MM/yyyy" }}</td>
+        <td>{{ student.createdAt | date : "dd/MM/yyyy" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<ng-template #noStudents>
+  <p>Aucun étudiant trouvé.</p>
+</ng-template>
+
+<button type="button" (click)="logout()">Logout</button><br />
