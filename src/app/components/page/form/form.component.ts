@@ -1,8 +1,7 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { StudentsService } from '../../../services/students.service';
 import { Students } from '../../../model/students';
 import { FormsModule } from '@angular/forms';
-import { BrowserModule } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-form',
@@ -11,6 +10,7 @@ import { BrowserModule } from '@angular/platform-browser';
   imports: [FormsModule],
 })
 export class FormComponent {
+  @Input() student: Students | null = null; // Ajouter la propriété d'entrée student
   newStudent: Students = {
     code: '',
     firstName: '',
@@ -23,20 +23,28 @@ export class FormComponent {
     createdAt: new Date(),
   };
 
-  @Output() formSubmitted = new EventEmitter<void>();
+  @Output() formSubmitted = new EventEmitter<Students>();
 
   constructor(private studentsService: StudentsService) {}
+
+  ngOnInit(): void {
+    if (this.student) {
+      this.newStudent = { ...this.student };
+    }
+  }
 
   onSubmit(): void {
     if (
       this.newStudent.firstName &&
       this.newStudent.lastName &&
-      this.newStudent.email
+      this.newStudent.email &&
+      this.newStudent.entryAt &&
+      this.newStudent.firstDepartureMissionAt
     ) {
       this.studentsService.createStudents(this.newStudent).subscribe({
         next: () => {
+          this.formSubmitted.emit(this.newStudent);
           this.resetForm();
-          this.formSubmitted.emit(); // Émettre l'événement pour informer le parent
         },
         error: (error) => {
           console.error("Erreur lors de l'ajout de l'étudiant :", error);
