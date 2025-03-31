@@ -28,8 +28,84 @@
     </tbody>
   </table>
 </div>
+
 <ng-template #noStudents>
   <p>Aucun étudiant trouvé.</p>
 </ng-template>
 
 <button type="button" (click)="logout()">Logout</button><br />
+
+<button type="button" (click)="toggleForm()">Créer</button><br />
+
+<!-- Affiche le composant de formulaire si showForm est true -->
+<app-form *ngIf="showForm" (formSubmitted)="onFormSubmitted()"></app-form>
+
+<form (ngSubmit)="onSubmit()">
+  <!-- Champ de saisie -->
+  <input
+    type="text"
+    name="query"
+    [(ngModel)]="searchQuery"
+    class="search-input"
+    placeholder="Rechercher..."
+  />
+
+  <!-- Boutons radio pour choisir le type de recherche -->
+  <div class="radio-group">
+    <label>
+      <input
+        type="radio"
+        name="searchType"
+        [(ngModel)]="searchType"
+        value="code"
+      />
+      Par Code
+    </label>
+    <label>
+      <input
+        type="radio"
+        name="searchType"
+        [(ngModel)]="searchType"
+        value="email"
+      />
+      Par Email
+    </label>
+  </div>
+
+  <!-- Bouton de soumission -->
+  <button type="submit" class="search-button">Rechercher</button>
+  <div *ngIf="filterStudents.length > 0; else nofilterStudents">
+    <table>
+      <thead>
+        <tr>
+          <th>Code</th>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Spécialité</th>
+          <th>Date d'entrée</th>
+          <th>Première mission</th>
+          <th>Date de création</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of filterStudents">
+          <td>{{ student.code }}</td>
+          <td>{{ student.firstName }}</td>
+          <td>{{ student.lastName }}</td>
+          <td>{{ student.email }}</td>
+          <td>{{ student.phone }}</td>
+          <td>{{ student.speciality }}</td>
+          <td>{{ student.entryAt | date : "dd/MM/yyyy" }}</td>
+          <td>{{ student.firstDepartureMissionAt | date : "dd/MM/yyyy" }}</td>
+          <td>{{ student.createdAt | date : "dd/MM/yyyy" }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #nofilterStudents>
+    <p>Aucun étudiant trouvé.</p>
+  </ng-template>
+</form>
