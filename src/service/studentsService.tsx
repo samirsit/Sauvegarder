@@ -108,7 +108,7 @@ export const fetchGetByCodeOrEmail = async (
  * @returns {Promise<Students>} - Une promesse qui résout avec l'objet étudiant mis à jour si la requête réussit,
  * ou rejette avec une erreur si la requête échoue.
  */
-const updateStudentByCode = async (
+export const fetchPut = async (
   code: string,
   studentData: Students
 ): Promise<Students> => {

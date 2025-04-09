@@ -1,81 +1,82 @@
-// Importation des composants nécessaires depuis Material UI
+import React, { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
   TableCell,
-  TableContainer,
   TableHead,
   TableRow,
-  Paper,
   IconButton,
+  Button,
+  Typography,
+  Box,
+  TextField,
   Stack,
 } from "@mui/material";
-
+import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import SearchIcon from "@mui/icons-material/Search";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-
-import { useEffect, useState } from "react";
-
-// Import du type Students (modèle de données)
 import { Students } from "../models/students";
-
-// Import des fonctions de service liées aux étudiants
 import {
   fetchAllStudents,
   fetchDeleteStudents,
   fetchGetByCodeOrEmail,
 } from "../service/studentsService";
-
-// Import du composant de dialogue (formulaire d'ajout)
 import DraggableDialog from "./Dialog";
+import SearchIcon from "@mui/icons-material/Search";
 
-function StudentsList() {
-  // État pour stocker la liste des étudiants
+export default function StudentsList() {
   const [students, setStudents] = useState<Students[]>([]);
-
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogMode, setDialogMode] = useState<"create" | "edit">("create");
+  const [selectedStudent, setSelectedStudent] = useState<Students | undefined>(
+    undefined
+  );
+  // État pour stocker le résultat de la recherche
+  const [searchResults, setSearchResults] = useState<Students[]>([]);
   // État pour gérer la valeur du champ de recherche
   const [searchText, setSearchText] = useState("");
 
-  // État pour stocker le résultat de la recherche
-  const [searchResults, setSearchResults] = useState<Students[]>([]);
-
-  // useEffect : appel automatique au chargement du composant pour récupérer tous les étudiants
   useEffect(() => {
-    const getStudents = async () => {
-      const data = await fetchAllStudents(); // Récupère les étudiants via API
-      setStudents(data); // Mise à jour de l'état principal
+    const loadStudents = async () => {
+      try {
+        const data = await fetchAllStudents();
+        setStudents(data);
+      } catch (error) {
+        console.error("Erreur lors du chargement des étudiants :", error);
+      }
     };
-    getStudents();
+
+    loadStudents();
   }, []);
 
-  /**
-   * Fonction pour supprimer un étudiant (par son email)
-   * @param email
-   */
-  const handleDeleteStudent = (email: string) => {
-    fetchDeleteStudents(email)
-      .then(() => {
-        // Mise à jour de la liste après suppression
-        setStudents((prev) =>
-          prev.filter((student) => student.email !== email)
-        );
-        // Mise à jour des résultats de recherche si l'étudiant supprimé était affiché
-        setSearchResults((prev) =>
-          prev.filter((student) => student.email !== email)
-        );
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la suppression de l'étudiant", error);
-      });
+  const handleAdd = () => {
+    setDialogMode("create");
+    setSelectedStudent(undefined);
+    setDialogOpen(true);
   };
 
-  /**
-   * Fonction appelée après l'ajout d'un étudiant via le formulaire
-   * @param newStudent
-   */
-  const handleAddStudent = (newStudent: Students) => {
-    setStudents((prevStudents) => [...prevStudents, newStudent]);
+  const handleEdit = (student: Students) => {
+    setDialogMode("edit");
+    setSelectedStudent(student);
+    setDialogOpen(true);
+  };
+
+  const handleSaveStudent = (student: Students) => {
+    setStudents((prev) => {
+      const exists = prev.find((s) => s.code === student.code);
+      if (exists) {
+        return prev.map((s) => (s.code === student.code ? student : s));
+      }
+      return [...prev, student];
+    });
+  };
+
+  const handleDelete = async (email: string) => {
+    try {
+      await fetchDeleteStudents(email);
+      setStudents((prev) => prev.filter((s) => s.email !== email));
+    } catch (error) {
+      console.error("Erreur lors de la suppression :", error);
+    }
   };
 
   /**
@@ -109,7 +110,13 @@ function StudentsList() {
   }, [searchResults, searchText]);
 
   return (
-    <div>
+    <Box p={2}>
+      <Typography variant="h4" gutterBottom>
+        Liste des étudiants
+      </Typography>
+      <Button variant="contained" onClick={handleAdd} sx={{ mb: 2 }}>
+        Ajouter un étudiant
+      </Button>
       {/* Barre de recherche + bouton "Ajouter" */}
       <Stack direction="row" spacing={2} my={3}>
         <div style={{ display: "flex", alignItems: "center" }}>
@@ -129,79 +136,69 @@ function StudentsList() {
           <IconButton color="primary" onClick={handleSearch}>
             <SearchIcon />
           </IconButton>
-        </div>
+        </div>{" "}
+        {/* ✅ Fermeture du div */}
+      </Stack>{" "}
+      {/* ✅ Fermeture correcte du Stack */}
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Code</TableCell>
+            <TableCell>Nom</TableCell>
+            <TableCell>Prénom</TableCell>
+            <TableCell>Email</TableCell>
+            <TableCell>Téléphone</TableCell>
+            <TableCell>Spécialité</TableCell>
+            <TableCell>Date d’entrée</TableCell>
+            <TableCell>Date mission</TableCell>
+            <TableCell>Créé le</TableCell>
+            <TableCell>Actions</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {students.map((student) => (
+            <TableRow key={student.code}>
+              <TableCell>{student.code}</TableCell>
+              <TableCell>{student.lastName}</TableCell>
+              <TableCell>{student.firstName}</TableCell>
+              <TableCell>{student.email}</TableCell>
+              <TableCell>{student.phone}</TableCell>
+              <TableCell>{student.speciality}</TableCell>
+              <TableCell>
+                {student.entryAt
+                  ? new Date(student.entryAt).toLocaleDateString()
+                  : ""}
+              </TableCell>
+              <TableCell>
+                {student.firstDepartureMissionAt
+                  ? new Date(
+                      student.firstDepartureMissionAt
+                    ).toLocaleDateString()
+                  : ""}
+              </TableCell>
+              <TableCell>
+                {new Date(student.createdAt).toLocaleDateString()}
+              </TableCell>
+              <TableCell>
+                <IconButton onClick={() => handleEdit(student)}>
+                  <EditIcon color="primary" />
+                </IconButton>
 
-        {/* Formulaire d'ajout d'étudiant dans un dialogue draggable */}
-        <DraggableDialog onAdd={handleAddStudent} />
-      </Stack>
-
-      {/* Table des étudiants */}
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              {/* En-têtes des colonnes */}
-              <TableCell>Code</TableCell>
-              <TableCell>Nom</TableCell>
-              <TableCell>Prénom</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Téléphone</TableCell>
-              <TableCell>Spécialité</TableCell>
-              <TableCell>Entrée</TableCell>
-              <TableCell>Départ mission</TableCell>
-              <TableCell>Créé le</TableCell>
-              <TableCell>Action</TableCell>
+                <IconButton onClick={() => handleDelete(student.email)}>
+                  <DeleteIcon color="error" />
+                </IconButton>
+              </TableCell>
             </TableRow>
-          </TableHead>
-          <TableBody>
-            {/* Affichage des étudiants ligne par ligne */}
-            {students.map((student) => (
-              <TableRow key={student.code}>
-                <TableCell>{student.code}</TableCell>
-                <TableCell>{student.lastName}</TableCell>
-                <TableCell>{student.firstName}</TableCell>
-                <TableCell>{student.email}</TableCell>
-                <TableCell>{student.phone}</TableCell>
-                <TableCell>{student.speciality}</TableCell>
-                <TableCell>
-                  {new Date(student.entryAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  {student.firstDepartureMissionAt
-                    ? new Date(
-                        student.firstDepartureMissionAt
-                      ).toLocaleDateString()
-                    : "N/A"}
-                </TableCell>
-                <TableCell>
-                  {new Date(student.createdAt).toLocaleDateString()}
-                </TableCell>
-                <TableCell>
-                  <Stack direction="row" spacing={0} my={3}>
-                    {/* Bouton pour supprimer un étudiant */}
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDeleteStudent(student.email)}
-                    >
-                      <BorderColorIcon color="primary" />
-                    </IconButton>
-
-                    {/* Bouton pour modifier un étudiant */}
-                    <IconButton
-                      color="error"
-                      onClick={() => handleDeleteStudent(student.email)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+          ))}
+        </TableBody>
+      </Table>
+      <DraggableDialog
+        open={dialogOpen}
+        mode={dialogMode}
+        studentToEdit={selectedStudent}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleSaveStudent}
+      />
+    </Box>
   );
 }
-
-export default StudentsList;
