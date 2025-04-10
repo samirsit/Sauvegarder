@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Students } from "../models/students";
+import axiosInstance from "../auth/utils/axiosInstance"; // Assurez-vous que axiosInstance est bien configuré pour gérer les tokens ou l'authentification.
 
 const API_URL = "http://localhost:8080/api/students";
 
@@ -7,7 +8,7 @@ const API_URL = "http://localhost:8080/api/students";
  * Récupération de tous les étudiants
  */
 export const fetchAllStudents = async (): Promise<Students[]> => {
-  const response = await axios.get(`${API_URL}/all-students`);
+  const response = await axiosInstance.get(`${API_URL}/all-students`);
   return response.data;
 };
 
@@ -17,7 +18,7 @@ export const fetchAllStudents = async (): Promise<Students[]> => {
 export const fetchDeleteStudents = async (email: string): Promise<void> => {
   try {
     // Envoie une requête DELETE à l'API avec l'email de l'étudiant dans la query string
-    await axios.delete(`${API_URL}/email?email=${email}`);
+    await axiosInstance.delete(`${API_URL}/email?email=${email}`);
 
     // Logique pour mettre à jour les données dans l'UI, si nécessaire (par exemple, dans React)
     console.log(`Étudiant avec l'email ${email} supprimé avec succès.`);
@@ -46,12 +47,16 @@ export const fetchAddStudents = async (
   student: Students
 ): Promise<Students | undefined> => {
   try {
-    // Remplacer l'URL par celle de votre API
-    const response = await axios.post(`${API_URL}/save-student`, student, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    // Utilisation de axiosInstance pour envoyer la requête avec les paramètres d'authentification
+    const response = await axiosInstance.post(
+      `${API_URL}/save-student`,
+      student,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     // Réponse après que l'étudiant a été ajouté avec succès
     console.log("Étudiant enregistré :", response.data);
@@ -92,7 +97,7 @@ export const fetchGetByCodeOrEmail = async (
       throw new Error("Le code ou l'email est requis.");
     }
 
-    const response = await axios.get<Students[]>(url);
+    const response = await axiosInstance.get<Students[]>(url); // Utilisation de axiosInstance ici aussi
     return response.data;
   } catch (error) {
     console.error("Erreur lors de la récupération de l'étudiant :", error);
@@ -113,7 +118,7 @@ export const fetchPut = async (
   studentData: Students
 ): Promise<Students> => {
   try {
-    const response = await axios.put(
+    const response = await axiosInstance.put(
       `${API_URL}/code?code=${code}`,
       studentData
     );
